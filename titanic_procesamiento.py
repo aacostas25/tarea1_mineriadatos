@@ -77,7 +77,7 @@ if st.sidebar.checkbox("Mostrar datos faltantes"):
 #Frecuencia Columnas
 if st.sidebar.checkbox("Frecuencia columnas"):
     st.write("### Frecuencia por columna")
-    columna_seleccionada = st.selectbox("Selecciona una columna para ver su frecuencia:", titanic.columns)
+    columna_seleccionada = st.selectbox("Selecciona una columna para ver su frecuencia:", titanic.columns.iloc[:, 1:])
     st.write(titanic[columna_seleccionada].value_counts())
     if st.button("Mostrar valor más frecuente"):
         st.write(titanic[columna_seleccionada].mode()[0])
@@ -89,7 +89,7 @@ if st.sidebar.checkbox("Información pasajeros"):
 
     if st.button("Mostrar fila seleccionada"):
         st.write(f"### Datos de la fila `{row_index}`")
-        st.dataframe(titanic.iloc[[row_index]])
+        st.dataframe(titanic.iloc[[row_index]].iloc[:, 1:])
 
 
 # Sección para gráficos dinámicos
