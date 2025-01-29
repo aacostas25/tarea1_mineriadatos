@@ -62,7 +62,7 @@ if st.sidebar.checkbox("Mostrar información del dataset"):
             dtype = parts[-1]  # Tipo de dato
             column_data.append([column_name, non_null_count, dtype])
 
-    df_info = pd.DataFrame(column_data, columns=["Columna", "No Nulos", "Tipo de Dato"])
+    df_info = pd.DataFrame(column_data, columns=["Columna", "No Nulos", "Tipo de Dato"]).iloc[2:]
 
     # Mostrar la tabla en Streamlit
     st.dataframe(df_info)
