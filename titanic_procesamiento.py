@@ -180,7 +180,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
     
     # Botón para aplicar las estrategias
     if st.button('Aplicar estrategias'):
-        df_2 = titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
+        titanic_copy = titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
     
         # Imputador KNN (se aplicará solo si es seleccionado)
         knn_imputer = KNNImputer(n_neighbors=5)
@@ -289,9 +289,9 @@ if st.sidebar.checkbox("Datos categoricos"):
     if st.button('Aplicar Estrategia de Codificación'):
         columns_to_drop = ['Ticket', 'Cabin', 'Name']
         try:
-            data = df2.drop(columns=[col for col in columns_to_drop if col in df_2.columns])
+            data = titanic_copy.drop(columns=[col for col in columns_to_drop if col in titanic_copy.columns])
         except NameError:
-            data = titanic_copy.drop(columns=[col for col in columns_to_drop if col in df_2.columns])
+            data = titanic.drop(columns=[col for col in columns_to_drop if col in titanic.columns])
         encoded_data = apply_encoding(data, strategy2)
         
         # Mostrar los datos codificados
