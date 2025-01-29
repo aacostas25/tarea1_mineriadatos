@@ -252,7 +252,9 @@ if st.sidebar.checkbox("Imputacion de datos"):
         ### 3. Estandarización de datos: 
         Usar **StandardScaler**, que ajusta los datos para tener **media 0** y **desviación estándar 1**. Esto es particularmente útil para modelos como **regresión logística**, **SVM**, o **redes neuronales**, donde la escala uniforme mejora la convergencia y el desempeño del modelo.
         """)
-        
+
+
+
 if st.sidebar.checkbox("Datos categoricos"):
     # Estrategias de codificación disponibles
     estrategias2 = ['Ordinal Encoder', 'OneHot Encoder']
@@ -285,10 +287,11 @@ if st.sidebar.checkbox("Datos categoricos"):
     
     # Botón para aplicar la estrategia de codificación
     if st.button('Aplicar Estrategia de Codificación'):
+        columns_to_drop = ['Ticket', 'Cabin', 'Name']
         try:
-            data = df2
+            data = df2.drop(columns=[col for col in columns_to_drop if col in df_2.columns])
         except NameError:
-            data = titanic_copy
+            data = titanic_copy.drop(columns=[col for col in columns_to_drop if col in df_2.columns])
         encoded_data = apply_encoding(data, strategy2)
         
         # Mostrar los datos codificados
