@@ -12,6 +12,7 @@ titanic = pd.read_csv('titanic.csv')
 st.title("Exploración de datos: Titanic")
 st.image('titanic.jpg', caption="Titanic")
 # Descripción inicial
+
 st.write("""
 ### ¡Bienvenidos!
 Esta aplicación interactiva permite explorar el dataset de Titanic.
@@ -35,6 +36,7 @@ if st.sidebar.checkbox("Mostrar primeras filas"):
 import io
 
 if st.sidebar.checkbox("Mostrar información del dataset"):
+    
     st.write("### Información del dataset")
 
     # Capturar la salida de info() en un buffer
@@ -52,7 +54,19 @@ if st.sidebar.checkbox("Mostrar estadísticas descriptivas"):
 # Datos faltantes
 if st.sidebar.checkbox("Mostrar datos faltantes"):
     st.write("### Datos faltantes por columna")
-    st.write(titanic.describe())
+    selected_column = st.selectbox("Selecciona una columna para ver los datos faltantes:", titanic.columns)
+
+    # Calcular datos faltantes
+    missing_values = titanic[selected_column].isnull().sum()
+    total_values = len(titanic[selected_column])
+    missing_percentage = (missing_values / total_values) * 100
+
+    # Mostrar resultado
+    st.write(f"### Información de la columna: `{selected_column}`")
+    st.write(f"- **Valores totales:** {total_values}")
+    st.write(f"- **Valores faltantes:** {missing_values} ({missing_percentage:.2f}%)")
+    st.write(titanic.isnull().sum())
+    
 
 
 # Sección para gráficos dinámicos
