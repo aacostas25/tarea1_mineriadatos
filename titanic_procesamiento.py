@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.impute import KNNImputer
 
 ##cargar los datos del titanic
 import kagglehub
@@ -116,6 +117,7 @@ if st.sidebar.checkbox("Información pasajeros"):
 
 #Matriz de correlacion
 if st.sidebar.checkbox("Matriz de correlacion"):
+    st.write("### Matriz de correlacion")
     # Filtrar solo las columnas numéricas
     titanic_num = titanic.select_dtypes(include=['float64', 'int64'])
     
@@ -131,6 +133,77 @@ if st.sidebar.checkbox("Matriz de correlacion"):
     
     # Mostrar la gráfica en Streamlit
     st.pyplot(plt)
+
+
+# Copiar el DataFrame para evitar modificar el original
+titanic_copy = titanic.copy()
+
+# Estrategias disponibles
+estrategias = ['Media', 'Mediana', 'Moda', 'Eliminar filas', 'Eliminar columna', 'KNN Imputación']
+if st.sidebar.checkbox("Imputacion de datos"):
+    # Crear selectboxes para seleccionar estrategias
+    fare_strategy = st.selectbox('Estrategia para Fare:', estrategias, index=estrategias.index('Media'))
+    age_strategy = st.selectbox('Estrategia para Age:', estrategias, index=estrategias.index('Media'))
+    cabin_strategy = st.selectbox('Estrategia para Cabin:', estrategias, index=estrategias.index('Media'))
+    
+    # Botón para aplicar las estrategias
+    if st.button('Aplicar estrategias'):
+        df_2 = titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
+    
+        # Imputador KNN (se aplicará solo si es seleccionado)
+        knn_imputer = KNNImputer(n_neighbors=5)
+    
+        # Aplicar estrategia para 'Fare'
+        if fare_strategy == 'Media':
+            df_2['Fare'].fillna(df_2['Fare'].mean(), inplace=True)
+        elif fare_strategy == 'Mediana':
+            df_2['Fare'].fillna(df_2['Fare'].median(), inplace=True)
+        elif fare_strategy == 'Moda':
+            df_2['Fare'].fillna(df_2['Fare'].mode()[0], inplace=True)
+        elif fare_strategy == 'Eliminar filas':
+            df_2.dropna(subset=['Fare'], inplace=True)
+        elif fare_strategy == 'Eliminar columna':
+            df_2.drop(columns=['Fare'], inplace=True)
+        elif fare_strategy == 'KNN Imputación':
+            df_2[['Fare']] = knn_imputer.fit_transform(df_2[['Fare']])
+    
+        # Aplicar estrategia para 'Age'
+        if age_strategy == 'Media':
+            df_2['Age'].fillna(df_2['Age'].mean(), inplace=True)
+        elif age_strategy == 'Mediana':
+            df_2['Age'].fillna(df_2['Age'].median(), inplace=True)
+        elif age_strategy == 'Moda':
+            df_2['Age'].fillna(df_2['Age'].mode()[0], inplace=True)
+        elif age_strategy == 'Eliminar filas':
+            df_2.dropna(subset=['Age'], inplace=True)
+        elif age_strategy == 'Eliminar columna':
+            df_2.drop(columns=['Age'], inplace=True)
+        elif age_strategy == 'KNN Imputación':
+            df_2[['Age']] = knn_imputer.fit_transform(df_2[['Age']])
+    
+        # Aplicar estrategia para 'Cabin'
+        if cabin_strategy == 'Media' or cabin_strategy == 'Mediana':
+            st.write("❌ La estrategia seleccionada no es válida para 'Cabin' porque la variable no es numérica.")
+        else:
+            if cabin_strategy == 'Moda':
+                df_2['Cabin'].fillna(df_2['Cabin'].mode()[0], inplace=True)
+            elif cabin_strategy == 'Eliminar filas':
+                df_2.dropna(subset=['Cabin'], inplace=True)
+            elif cabin_strategy == 'Eliminar columna':
+                df_2.drop(columns=['Cabin'], inplace=True)
+            elif cabin_strategy == 'KNN Imputación':
+                # Cabin tiene muchos valores únicos, simplificaremos usando un reemplazo categórico
+                df_2['Cabin'] = df_2['Cabin'].str[0]  # Usar solo la primera letra de Cabin
+                df_2['Cabin'] = df_2['Cabin'].fillna('U')  # Rellenar NaN con una categoría ficticia
+    
+        # Mostrar el DataFrame resultante
+        st.write("### DataFrame resultante")
+        st.dataframe(df_2.head())
+
+
+
+
+
 
 
 # Sección para gráficos dinámicos
