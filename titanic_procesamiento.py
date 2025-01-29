@@ -81,9 +81,16 @@ if st.sidebar.checkbox("Frecuencia columnas"):
     st.write(titanic[columna_seleccionada].value_counts())
     if st.button("Mostrar valor más frecuente"):
         st.write(titanic[columna_seleccionada].mode()[0])
-        
 
-    # Calcular datos faltantes
+#Informacion por pasajero
+if st.sidebar.checkbox("Información pasajeros"):
+    st.write("##Informacion por pasajero")
+    row_index = st.number_input("Ingresa el índice de la fila a visualizar:", min_value=0, max_value=len(titanic)-1, step=1)
+
+    if st.button("Mostrar fila seleccionada"):
+        st.write(f"### Datos de la fila `{row_index}`")
+        st.dataframe(titanic.iloc[[row_index]])
+
 
 # Sección para gráficos dinámicos
 if st.sidebar.checkbox("Gráficos dinámicos"):
