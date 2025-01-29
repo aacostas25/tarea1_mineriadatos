@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 ##cargar los datos del titanic
 import kagglehub
 
-titanic = pd.read_csv('assets/titanic.csv')
+titanic = pd.read_csv('titanic.csv')
 
 # Título de la aplicación
 st.title("Exploración de datos: Titanic")
-st.image('assets/titanic.jpg', caption="Titanic")
+st.image('titanic.jpg', caption="Titanic")
 # Descripción inicial
 st.write("""
 ### ¡Bienvenidos!
