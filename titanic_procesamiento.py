@@ -326,7 +326,7 @@ if st.sidebar.checkbox("Escalado de datos"):
         st.write(f"Vista previa de los datos escalados usando '{strategy}':")
         st.dataframe(scaled_data.head())
 
-st.markdown("""
+    st.markdown("""
         ## **Retroalimentación: ¿qué era mejor escoger?**
         
         ### 1. Manejo de valores faltantes:
