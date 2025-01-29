@@ -10,7 +10,7 @@ titanic = pd.read_csv('/content/titanic.csv')
 
 # Título de la aplicación
 st.title("Exploración de datos: Titanic")
-st.image('/content/titanic.jpg', caption="Titanic")
+st.image('assets/titanic.jpg', caption="Titanic")
 # Descripción inicial
 st.write("""
 ### ¡Bienvenidos!
