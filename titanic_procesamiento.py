@@ -174,7 +174,8 @@ if st.sidebar.checkbox("Gráficos dinámicos"):
 
 st.sidebar.header("Transformacion datos")
 # Copiar el DataFrame para evitar modificar el original
-titanic_copy = titanic.copy()
+if 'titanic_copy' not in st.session_state:
+    st.session_state.titanic_copy = titanic.copy()
 
 # Estrategias disponibles
 estrategias = ['Media', 'Mediana', 'Moda', 'Eliminar filas', 'Eliminar columna', 'KNN Imputación']
@@ -237,7 +238,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
         # Mostrar el DataFrame resultante
         st.write("### DataFrame resultante")
         st.dataframe(df_2.head())
-        titanic_copy = df_2.copy()
+        st.session_state.titanic_copy = df_2.copy()
 
 
 
