@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.impute import KNNImputer
-
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 ##cargar los datos del titanic
 import kagglehub
 
@@ -134,7 +134,38 @@ if st.sidebar.checkbox("Matriz de correlacion"):
     # Mostrar la gráfica en Streamlit
     st.pyplot(plt)
 
+# Sección para gráficos dinámicos
+if st.sidebar.checkbox("Gráficos dinámicos"):
 
+    # Selección de variables para el gráfico
+    x_var = st.sidebar.selectbox("Selecciona la variable X:", titanic.columns)
+    y_var = st.sidebar.selectbox("Selecciona la variable Y:", titanic.columns)
+    
+    # Tipo de gráfico
+    chart_type = st.sidebar.radio(
+        "Selecciona el tipo de gráfico:",
+        ("Dispersión", "Histograma", "Boxplot")
+    )
+    
+    # Mostrar el gráfico
+    st.write("### Gráficos")
+    if chart_type == "Dispersión":
+        st.write(f"#### Gráfico de dispersión: {x_var} vs {y_var}")
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=titanic, x=x_var, y=y_var, ax=ax)
+        st.pyplot(fig)
+    elif chart_type == "Histograma":
+        st.write(f"#### Histograma de {x_var}")
+        fig, ax = plt.subplots()
+        sns.histplot(titanic[x_var], bins=30, kde=True, ax=ax)
+        st.pyplot(fig)
+    elif chart_type == "Boxplot":
+        st.write(f"#### Boxplot de {y_var} por {x_var}")
+        fig, ax = plt.subplots()
+        sns.boxplot(data=titanic, x=x_var, y=y_var, ax=ax)
+        st.pyplot(fig)
+
+st.sidebar.header("Transformacion datos")
 # Copiar el DataFrame para evitar modificar el original
 titanic_copy = titanic.copy()
 
@@ -222,39 +253,86 @@ if st.sidebar.checkbox("Imputacion de datos"):
         """)
         
 
+# Estrategias de codificación disponibles
+estrategias2 = ['Ordinal Encoder', 'OneHot Encoder']
 
+# Crear un selectbox para seleccionar la estrategia de codificación
+strategy2 = st.selectbox('Selecciona una estrategia de codificación:', estrategias2, index=0)
 
+# Función para aplicar la codificación
+def apply_encoding(data, strategy):
+    categorical_cols = data.select_dtypes(include=['object']).columns
 
+    if len(categorical_cols) == 0:
+        st.warning("No hay columnas categóricas en los datos.")
+        return data
 
+    data_copy = data.copy()
 
+    if strategy2 == 'Ordinal Encoder':
+        encoder = OrdinalEncoder()
+        data_copy[categorical_cols] = encoder.fit_transform(data_copy[categorical_cols])
+    elif strategy2 == 'OneHot Encoder':
+        encoder = OneHotEncoder(sparse_output=False)
+        encoded_data = pd.DataFrame(encoder.fit_transform(data_copy[categorical_cols]),
+                                    columns=encoder.get_feature_names_out(categorical_cols),
+                                    index=data_copy.index)
+        data_copy = data_copy.drop(categorical_cols, axis=1)
+        data_copy = pd.concat([data_copy, encoded_data], axis=1)
 
-# Sección para gráficos dinámicos
-if st.sidebar.checkbox("Gráficos dinámicos"):
+    return data_copy
 
-    # Selección de variables para el gráfico
-    x_var = st.sidebar.selectbox("Selecciona la variable X:", titanic.columns)
-    y_var = st.sidebar.selectbox("Selecciona la variable Y:", titanic.columns)
+# Botón para aplicar la estrategia de codificación
+if st.button('Aplicar Estrategia de Codificación'):
+    try:
+        data = df2
+    except NameError:
+        data = titanic_copy
+    encoded_data = apply_encoding(data, strategy2)
     
-    # Tipo de gráfico
-    chart_type = st.sidebar.radio(
-        "Selecciona el tipo de gráfico:",
-        ("Dispersión", "Histograma", "Boxplot")
-    )
+    # Mostrar los datos codificados
+    st.write(f"Vista previa de los datos codificados usando '{strategy2}':")
+    st.dataframe(encoded_data.head())
+    st.write(f"Información de los datos codificados:")
+    st.write(encoded_data.info())
+
+# Estrategias disponibles
+estrategias1 = ['Standard Scaler', 'MinMax Scaler', 'Robust Scaler']
+
+if st.sidebar.checkbox("Escalado de datos"):
+    # Crear selectbox para seleccionar estrategia
+    strategy = st.selectbox('Selecciona una estrategia de escalado:', estrategias1, index=0)
     
-    # Mostrar el gráfico
-    st.write("### Gráficos")
-    if chart_type == "Dispersión":
-        st.write(f"#### Gráfico de dispersión: {x_var} vs {y_var}")
-        fig, ax = plt.subplots()
-        sns.scatterplot(data=titanic, x=x_var, y=y_var, ax=ax)
-        st.pyplot(fig)
-    elif chart_type == "Histograma":
-        st.write(f"#### Histograma de {x_var}")
-        fig, ax = plt.subplots()
-        sns.histplot(titanic[x_var], bins=30, kde=True, ax=ax)
-        st.pyplot(fig)
-    elif chart_type == "Boxplot":
-        st.write(f"#### Boxplot de {y_var} por {x_var}")
-        fig, ax = plt.subplots()
-        sns.boxplot(data=titanic, x=x_var, y=y_var, ax=ax)
-        st.pyplot(fig)
+    # Función para aplicar el escalado
+    def apply_scaling(data, strategy):
+        numeric_cols = data.select_dtypes(include=['float64', 'int64']).columns
+    
+        if len(numeric_cols) == 0:
+            st.warning("No hay columnas numéricas en los datos.")
+            return data
+    
+        data_copy = data.copy()
+    
+        if strategy == 'Standard Scaler':
+            scaler = StandardScaler()
+            data_copy[numeric_cols] = scaler.fit_transform(data_copy[numeric_cols])
+        elif strategy == 'MinMax Scaler':
+            scaler = MinMaxScaler()
+            data_copy[numeric_cols] = scaler.fit_transform(data_copy[numeric_cols])
+        elif strategy == 'Robust Scaler':
+            scaler = RobustScaler()
+            data_copy[numeric_cols] = scaler.fit_transform(data_copy[numeric_cols])
+    
+        return data_copy
+    
+    # Botón para aplicar la estrategia
+    if st.button('Aplicar Estrategia de Escalado'):
+        scaled_data = apply_scaling(encoded_data, strategy)
+        
+        # Mostrar los datos escalados
+        st.write(f"Vista previa de los datos escalados usando '{strategy}':")
+        st.dataframe(scaled_data.head())
+
+
+
+
