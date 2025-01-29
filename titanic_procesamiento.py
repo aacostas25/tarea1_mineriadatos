@@ -34,6 +34,33 @@ if st.sidebar.checkbox("Mostrar primeras filas"):
 
 # Mostrar información del dataset
 import io
+if st.sidebar.checkbox("Mostrar información del dataset"):
+    st.write("### Información del dataset")
+
+    # Crear un buffer para capturar la salida de info()
+    buffer = io.StringIO()
+    titanic.info(buf=buffer)
+
+    # Convertir el contenido del buffer a texto
+    info_text = buffer.getvalue()
+
+    # Procesar la información de manera legible
+    lines = info_text.split("\n")
+    dataset_summary = {
+        "Filas y columnas": lines[0].split(":")[-1].strip(),
+        "Tipos de datos": [],
+    }
+
+    for line in lines[1:]:
+        if "Non-Null Count" in line:
+            dataset_summary["Tipos de datos"].append(line.strip())
+
+    # Mostrar los resultados
+    st.write(f"**Filas y columnas:** {dataset_summary['Filas y columnas']}")
+
+    st.write("#### Columnas y Tipos de Datos")
+    for tipo in dataset_summary["Tipos de datos"]:
+        st.code(tipo)
 
 if st.sidebar.checkbox("Mostrar información del dataset"):
     
@@ -84,7 +111,7 @@ if st.sidebar.checkbox("Frecuencia columnas"):
 
 #Informacion por pasajero
 if st.sidebar.checkbox("Información pasajeros"):
-    st.write("##Informacion por pasajero")
+    st.write("### Informacion por pasajero")
     row_index = st.number_input("Ingresa el índice de la fila a visualizar:", min_value=0, max_value=len(titanic)-1, step=1)
 
     if st.button("Mostrar fila seleccionada"):
