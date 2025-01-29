@@ -66,7 +66,7 @@ if st.sidebar.checkbox("Mostrar datos faltantes"):
     st.write(f"- **Valores totales:** {total_values}")
     st.write(f"- **Valores faltantes:** {missing_values} ({missing_percentage:.2f}%)")
     
-    if st.button("Mostrar valores faltantes en todas las columnas"):
+    if st.button("Mostrar todos valores faltantes"):
         missing_total = titanic.isnull().sum()
         missing_total_df = pd.DataFrame({"Columna": missing_total.index, "Valores Faltantes": missing_total.values})
         
