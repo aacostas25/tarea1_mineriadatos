@@ -37,30 +37,35 @@ import io
 if st.sidebar.checkbox("Mostrar información del dataset"):
     st.write("### Información del dataset")
 
-    # Crear un buffer para capturar la salida de info()
+    # Capturar la salida de info() en un buffer
     buffer = io.StringIO()
     titanic.info(buf=buffer)
+    
+    # Procesar la salida para estructurarla mejor
+    info_text = buffer.getvalue().split("\n")  # Dividir en líneas
+    info_text = [line.strip() for line in info_text if line.strip()]  # Quitar espacios vacíos
+    
+    # Extraer información clave
+    filas_columnas = info_text[0]  # Primera línea con shape
+    columnas_info = info_text[3:]  # A partir de la cuarta línea están las columnas
 
-    # Convertir el contenido del buffer a texto
-    info_text = buffer.getvalue()
+    # Mostrar filas y columnas
+    st.write(f"**{filas_columnas}**")
 
-    # Procesar la información de manera legible
-    lines = info_text.split("\n")
-    dataset_summary = {
-        "Filas y columnas": lines[0].split(":")[-1].strip(),
-        "Tipos de datos": [],
-    }
+    # Convertir la información de columnas en un DataFrame
+    column_data = []
+    for line in columnas_info:
+        parts = line.split()  # Separar por espacios
+        if len(parts) >= 3:
+            column_name = parts[1]  # Nombre de la columna
+            non_null_count = parts[2]  # Cantidad de valores no nulos
+            dtype = parts[-1]  # Tipo de dato
+            column_data.append([column_name, non_null_count, dtype])
 
-    for line in lines[1:]:
-        if "Non-Null Count" in line:
-            dataset_summary["Tipos de datos"].append(line.strip())
+    df_info = pd.DataFrame(column_data, columns=["Columna", "No Nulos", "Tipo de Dato"])
 
-    # Mostrar los resultados
-    st.write(f"**Filas y columnas:** {dataset_summary['Filas y columnas']}")
-
-    st.write("#### Columnas y Tipos de Datos")
-    for tipo in dataset_summary["Tipos de datos"]:
-        st.code(tipo)
+    # Mostrar la tabla en Streamlit
+    st.dataframe(df_info)
 
 # Estadísticas descriptivas
 if st.sidebar.checkbox("Mostrar estadísticas descriptivas"):
