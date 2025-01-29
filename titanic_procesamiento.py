@@ -73,6 +73,7 @@ if st.sidebar.checkbox("Mostrar información del dataset"):
 if st.sidebar.checkbox("Mostrar estadísticas descriptivas"):
     st.write("### Estadísticas descriptivas")
     st.write(titanic.describe())
+    
 # Datos faltantes
 if st.sidebar.checkbox("Mostrar datos faltantes"):
     st.write("### Datos faltantes por columna")
@@ -112,6 +113,24 @@ if st.sidebar.checkbox("Información pasajeros"):
     if st.button("Mostrar fila seleccionada"):
         st.write(f"### Datos de la fila `{row_index}`")
         st.dataframe(titanic.iloc[[row_index]].iloc[:, 1:])
+
+#Matriz de correlacion
+if st.sidebar.checkbox("Matriz de correlacion"):
+    # Filtrar solo las columnas numéricas
+    titanic_num = titanic.select_dtypes(include=['float64', 'int64'])
+    
+    # Calcular la matriz de correlación
+    correlacion = titanic_num.corr()
+    
+    # Configuración de la gráfica
+    plt.figure(figsize=(10, 8))  # Tamaño de la figura
+    sns.heatmap(correlacion, annot=True, cmap='coolwarm', fmt='.2f', cbar=True, square=True)
+    
+    # Título de la gráfica
+    plt.title('Matriz de Correlación de Titanic')
+    
+    # Mostrar la gráfica en Streamlit
+    st.pyplot(plt)
 
 
 # Sección para gráficos dinámicos
