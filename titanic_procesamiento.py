@@ -60,7 +60,6 @@ if st.sidebar.checkbox("Mostrar información del dataset"):
             column_name = parts[1]  # Nombre de la columna
             non_null_count = parts[2]  # Cantidad de valores no nulos
             dtype = parts[-1]  # Tipo de dato
-            column_data.append([column_name, non_null_count, dtype])
 
     df_info = pd.DataFrame(column_data, columns=["Columna", "No Nulos", "Tipo de Dato"])
 
