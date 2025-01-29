@@ -231,7 +231,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
         # Mostrar el DataFrame resultante
         st.write("### DataFrame resultante")
         st.dataframe(df_2.head())
-        global titanic_copy = df2.copy()
+        titanic_copy = df2.copy()
         st.markdown("""
         ## **Retroalimentación: ¿qué era mejor escoger?**
         
