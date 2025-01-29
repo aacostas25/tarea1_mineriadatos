@@ -180,7 +180,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
     
     # Botón para aplicar las estrategias
     if st.button('Aplicar estrategias'):
-        titanic_copy = titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
+        df_2 = titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
     
         # Imputador KNN (se aplicará solo si es seleccionado)
         knn_imputer = KNNImputer(n_neighbors=5)
@@ -231,7 +231,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
         # Mostrar el DataFrame resultante
         st.write("### DataFrame resultante")
         st.dataframe(df_2.head())
-
+        global titanic_copy = df2.copy()
         st.markdown("""
         ## **Retroalimentación: ¿qué era mejor escoger?**
         
