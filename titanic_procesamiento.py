@@ -63,9 +63,10 @@ if st.sidebar.checkbox("Mostrar información del dataset"):
             column_data.append([column_name, non_null_count, dtype])
 
     df_info = pd.DataFrame(column_data, columns=["Columna", "No Nulos", "Tipo de Dato"]).iloc[2:]
-
+    memorie_use = df_info[-1]
     # Mostrar la tabla en Streamlit
-    st.dataframe(df_info)
+    st.dataframe(df_info[:-1])
+    st.write(f"Uso en memoria {memorie_use}")
 
 # Estadísticas descriptivas
 if st.sidebar.checkbox("Mostrar estadísticas descriptivas"):
