@@ -252,54 +252,55 @@ if st.sidebar.checkbox("Imputacion de datos"):
         Usar **StandardScaler**, que ajusta los datos para tener **media 0** y **desviación estándar 1**. Esto es particularmente útil para modelos como **regresión logística**, **SVM**, o **redes neuronales**, donde la escala uniforme mejora la convergencia y el desempeño del modelo.
         """)
         
-
-# Estrategias de codificación disponibles
-estrategias2 = ['Ordinal Encoder', 'OneHot Encoder']
-
-# Crear un selectbox para seleccionar la estrategia de codificación
-strategy2 = st.selectbox('Selecciona una estrategia de codificación:', estrategias2, index=0)
-
-# Función para aplicar la codificación
-def apply_encoding(data, strategy):
-    categorical_cols = data.select_dtypes(include=['object']).columns
-
-    if len(categorical_cols) == 0:
-        st.warning("No hay columnas categóricas en los datos.")
-        return data
-
-    data_copy = data.copy()
-
-    if strategy2 == 'Ordinal Encoder':
-        encoder = OrdinalEncoder()
-        data_copy[categorical_cols] = encoder.fit_transform(data_copy[categorical_cols])
-    elif strategy2 == 'OneHot Encoder':
-        encoder = OneHotEncoder(sparse_output=False)
-        encoded_data = pd.DataFrame(encoder.fit_transform(data_copy[categorical_cols]),
-                                    columns=encoder.get_feature_names_out(categorical_cols),
-                                    index=data_copy.index)
-        data_copy = data_copy.drop(categorical_cols, axis=1)
-        data_copy = pd.concat([data_copy, encoded_data], axis=1)
-
-    return data_copy
-
-# Botón para aplicar la estrategia de codificación
-if st.button('Aplicar Estrategia de Codificación'):
-    try:
-        data = df2
-    except NameError:
-        data = titanic_copy
-    encoded_data = apply_encoding(data, strategy2)
+if st.sidebar.checkbox("Información pasajeros"):
+    # Estrategias de codificación disponibles
+    estrategias2 = ['Ordinal Encoder', 'OneHot Encoder']
     
-    # Mostrar los datos codificados
-    st.write(f"Vista previa de los datos codificados usando '{strategy2}':")
-    st.dataframe(encoded_data.head())
-    st.write(f"Información de los datos codificados:")
-    st.write(encoded_data.info())
+    # Crear un selectbox para seleccionar la estrategia de codificación
+    strategy2 = st.selectbox('Selecciona una estrategia de codificación:', estrategias2, index=0)
+    
+    # Función para aplicar la codificación
+    def apply_encoding(data, strategy):
+        categorical_cols = data.select_dtypes(include=['object']).columns
+    
+        if len(categorical_cols) == 0:
+            st.warning("No hay columnas categóricas en los datos.")
+            return data
+    
+        data_copy = data.copy()
+    
+        if strategy2 == 'Ordinal Encoder':
+            encoder = OrdinalEncoder()
+            data_copy[categorical_cols] = encoder.fit_transform(data_copy[categorical_cols])
+        elif strategy2 == 'OneHot Encoder':
+            encoder = OneHotEncoder(sparse_output=False)
+            encoded_data = pd.DataFrame(encoder.fit_transform(data_copy[categorical_cols]),
+                                        columns=encoder.get_feature_names_out(categorical_cols),
+                                        index=data_copy.index)
+            data_copy = data_copy.drop(categorical_cols, axis=1)
+            data_copy = pd.concat([data_copy, encoded_data], axis=1)
+    
+        return data_copy
+    
+    # Botón para aplicar la estrategia de codificación
+    if st.button('Aplicar Estrategia de Codificación'):
+        try:
+            data = df2
+        except NameError:
+            data = titanic_copy
+        encoded_data = apply_encoding(data, strategy2)
+        
+        # Mostrar los datos codificados
+        st.write(f"Vista previa de los datos codificados usando '{strategy2}':")
+        st.dataframe(encoded_data.head())
+        st.write(f"Información de los datos codificados:")
+        st.write(encoded_data.info())
 
-# Estrategias disponibles
-estrategias1 = ['Standard Scaler', 'MinMax Scaler', 'Robust Scaler']
 
 if st.sidebar.checkbox("Escalado de datos"):
+    # Estrategias disponibles
+    estrategias1 = ['Standard Scaler', 'MinMax Scaler', 'Robust Scaler']
+
     # Crear selectbox para seleccionar estrategia
     strategy = st.selectbox('Selecciona una estrategia de escalado:', estrategias1, index=0)
     
