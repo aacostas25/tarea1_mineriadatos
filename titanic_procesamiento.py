@@ -187,7 +187,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
     
     # Botón para aplicar las estrategias
     if st.button('Aplicar estrategias'):
-        df_2 = titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
+        df_2 = st.session_state.titanic_copy.copy()  # Trabajar sobre una copia del DataFrame
     
         # Imputador KNN (se aplicará solo si es seleccionado)
         knn_imputer = KNNImputer(n_neighbors=5)
