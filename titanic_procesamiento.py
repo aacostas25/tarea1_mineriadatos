@@ -65,7 +65,13 @@ if st.sidebar.checkbox("Mostrar datos faltantes"):
     st.write(f"### Información de la columna: `{selected_column}`")
     st.write(f"- **Valores totales:** {total_values}")
     st.write(f"- **Valores faltantes:** {missing_values} ({missing_percentage:.2f}%)")
-    st.write(titanic.isnull().sum())
+    
+    if st.button("Mostrar valores faltantes en todas las columnas"):
+        missing_total = titanic.isnull().sum()
+        missing_total_df = pd.DataFrame({"Columna": missing_total.index, "Valores Faltantes": missing_total.values})
+        
+        # Filtrar solo las columnas con valores faltantes
+        missing_total_df = missing_total_df[missing_total_df["Valores Faltantes"] > 0]
     
 
 
