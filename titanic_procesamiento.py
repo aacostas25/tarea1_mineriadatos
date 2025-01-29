@@ -66,43 +66,52 @@ if st.sidebar.checkbox("Mostrar datos faltantes"):
     st.write(f"- **Valores totales:** {total_values}")
     st.write(f"- **Valores faltantes:** {missing_values} ({missing_percentage:.2f}%)")
     
-    if st.button("Mostrar todos valores faltantes"):
+    if st.button("Mostrar todos los valores faltantes"):
         missing_total = titanic.isnull().sum()
         missing_total_df = pd.DataFrame({"Columna": missing_total.index, "Valores Faltantes": missing_total.values})
         
         # Filtrar solo las columnas con valores faltantes
         missing_total_df = missing_total_df[missing_total_df["Valores Faltantes"] > 0]
         st.write(missing_total_df)
-    
 
+#Frecuencia Columnas
+if st.sidebar.checkbox("Frecuencia columnas"):
+    st.write("### Frecuencia por columna")
+    columna_seleccionada = st.selectbox("Selecciona una columna para ver su frecuencia:", titanic.columns)
+    st.write(titanic[columna_seleccionada].value_counts())
+    if st.button("Mostrar valor más frecuente"):
+        st.write(titanic[columna_seleccionada].mode()[0])
+        
+
+    # Calcular datos faltantes
 
 # Sección para gráficos dinámicos
-st.sidebar.header("Gráficos dinámicos")
+if st.sidebar.header("Gráficos dinámicos"):
 
-# Selección de variables para el gráfico
-x_var = st.sidebar.selectbox("Selecciona la variable X:", titanic.columns)
-y_var = st.sidebar.selectbox("Selecciona la variable Y:", titanic.columns)
-
-# Tipo de gráfico
-chart_type = st.sidebar.radio(
-    "Selecciona el tipo de gráfico:",
-    ("Dispersión", "Histograma", "Boxplot")
-)
-
-# Mostrar el gráfico
-st.write("### Gráficos")
-if chart_type == "Dispersión":
-    st.write(f"#### Gráfico de dispersión: {x_var} vs {y_var}")
-    fig, ax = plt.subplots()
-    sns.scatterplot(data=titanic, x=x_var, y=y_var, ax=ax)
-    st.pyplot(fig)
-elif chart_type == "Histograma":
-    st.write(f"#### Histograma de {x_var}")
-    fig, ax = plt.subplots()
-    sns.histplot(titanic[x_var], bins=30, kde=True, ax=ax)
-    st.pyplot(fig)
-elif chart_type == "Boxplot":
-    st.write(f"#### Boxplot de {y_var} por {x_var}")
-    fig, ax = plt.subplots()
-    sns.boxplot(data=titanic, x=x_var, y=y_var, ax=ax)
-    st.pyplot(fig)
+    # Selección de variables para el gráfico
+    x_var = st.sidebar.selectbox("Selecciona la variable X:", titanic.columns)
+    y_var = st.sidebar.selectbox("Selecciona la variable Y:", titanic.columns)
+    
+    # Tipo de gráfico
+    chart_type = st.sidebar.radio(
+        "Selecciona el tipo de gráfico:",
+        ("Dispersión", "Histograma", "Boxplot")
+    )
+    
+    # Mostrar el gráfico
+    st.write("### Gráficos")
+    if chart_type == "Dispersión":
+        st.write(f"#### Gráfico de dispersión: {x_var} vs {y_var}")
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=titanic, x=x_var, y=y_var, ax=ax)
+        st.pyplot(fig)
+    elif chart_type == "Histograma":
+        st.write(f"#### Histograma de {x_var}")
+        fig, ax = plt.subplots()
+        sns.histplot(titanic[x_var], bins=30, kde=True, ax=ax)
+        st.pyplot(fig)
+    elif chart_type == "Boxplot":
+        st.write(f"#### Boxplot de {y_var} por {x_var}")
+        fig, ax = plt.subplots()
+        sns.boxplot(data=titanic, x=x_var, y=y_var, ax=ax)
+        st.pyplot(fig)
