@@ -252,7 +252,7 @@ if st.sidebar.checkbox("Imputacion de datos"):
         Usar **StandardScaler**, que ajusta los datos para tener **media 0** y **desviación estándar 1**. Esto es particularmente útil para modelos como **regresión logística**, **SVM**, o **redes neuronales**, donde la escala uniforme mejora la convergencia y el desempeño del modelo.
         """)
         
-if st.sidebar.checkbox("Información pasajeros"):
+if st.sidebar.checkbox("Datos categoricos"):
     # Estrategias de codificación disponibles
     estrategias2 = ['Ordinal Encoder', 'OneHot Encoder']
     
