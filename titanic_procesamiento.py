@@ -62,18 +62,6 @@ if st.sidebar.checkbox("Mostrar información del dataset"):
     for tipo in dataset_summary["Tipos de datos"]:
         st.code(tipo)
 
-if st.sidebar.checkbox("Mostrar información del dataset"):
-    
-    st.write("### Información del dataset")
-
-    # Capturar la salida de info() en un buffer
-    buffer = io.StringIO()
-    titanic.info(buf=buffer)
-
-    # Convertir el contenido del buffer a texto
-    info_text = buffer.getvalue()
-    st.text(info_text)
-
 # Estadísticas descriptivas
 if st.sidebar.checkbox("Mostrar estadísticas descriptivas"):
     st.write("### Estadísticas descriptivas")
