@@ -66,7 +66,7 @@ if st.sidebar.checkbox("Mostrar información del dataset"):
     memory_values = df_info.iloc[-1].values
     memorie_use = " ".join(str(value) for value in memory_values)
     # Mostrar la tabla en Streamlit
-    st.dataframe(df_info.iloc[:-1])
+    st.dataframe(df_info.iloc[:-2])
     st.write(f"Uso en memoria {memorie_use}")
 
 # Estadísticas descriptivas
