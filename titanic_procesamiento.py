@@ -108,7 +108,7 @@ if st.sidebar.checkbox("Mostrar datos faltantes"):
 #Frecuencia Columnas
 if st.sidebar.checkbox("Frecuencia columnas"):
     st.write("### Frecuencia por columna")
-    columna_seleccionada = st.selectbox("Selecciona una columna para ver su frecuencia:", titanic.columns.iloc[:, 1:])
+    columna_seleccionada = st.selectbox("Selecciona una columna para ver su frecuencia:", titanic.columns)
     st.write(titanic[columna_seleccionada].value_counts())
     if st.button("Mostrar valor más frecuente"):
         st.write(titanic[columna_seleccionada].mode()[0])
