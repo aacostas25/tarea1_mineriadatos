@@ -72,6 +72,7 @@ if st.sidebar.checkbox("Mostrar datos faltantes"):
         
         # Filtrar solo las columnas con valores faltantes
         missing_total_df = missing_total_df[missing_total_df["Valores Faltantes"] > 0]
+        st.write(missing_total_df)
     
 
 
