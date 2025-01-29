@@ -86,7 +86,7 @@ if st.sidebar.checkbox("Frecuencia columnas"):
     # Calcular datos faltantes
 
 # Sección para gráficos dinámicos
-if st.sidebar.header("Gráficos dinámicos"):
+if st.sidebar.checkbox("Gráficos dinámicos"):
 
     # Selección de variables para el gráfico
     x_var = st.sidebar.selectbox("Selecciona la variable X:", titanic.columns)
