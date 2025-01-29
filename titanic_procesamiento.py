@@ -299,9 +299,10 @@ if st.sidebar.checkbox("Datos categoricos"):
         st.dataframe(encoded_data.head())
         st.write(f"Información de los datos codificados:")
         st.write(encoded_data.info())
-
+        titanic_copy = encoded_data.copy()
 
 if st.sidebar.checkbox("Escalado de datos"):
+    st.write("### Escalado de datos")
     # Estrategias disponibles
     estrategias1 = ['Standard Scaler', 'MinMax Scaler', 'Robust Scaler']
 
@@ -332,7 +333,8 @@ if st.sidebar.checkbox("Escalado de datos"):
     
     # Botón para aplicar la estrategia
     if st.button('Aplicar Estrategia de Escalado'):
-        scaled_data = apply_scaling(encoded_data, strategy)
+        
+        scaled_data = apply_scaling(titanic_copy, strategy)
         
         # Mostrar los datos escalados
         st.write(f"Vista previa de los datos escalados usando '{strategy}':")
