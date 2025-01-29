@@ -238,26 +238,6 @@ if st.sidebar.checkbox("Imputacion de datos"):
         st.write("### DataFrame resultante")
         st.dataframe(df_2.head())
         titanic_copy = df_2.copy()
-        st.markdown("""
-        ## **Retroalimentación: ¿qué era mejor escoger?**
-        
-        ### 1. Manejo de valores faltantes:
-        
-        - **Age** (faltan 86 valores, 20.57%):
-          - Se recomienda **imputación por KNN**, ya que considera relaciones entre columnas como Pclass, Sex, y SibSp para estimar las edades de manera más precisa. Esta estrategia es útil porque la edad es una característica importante para predecir la supervivencia.
-          
-        - **Fare** (falta 1 valor, 0.24%):
-          - Usar imputación por **media o mediana**, ya que el número de valores faltantes es insignificante. También una buena alternativa es **eliminar la fila** con el valor faltante.
-        
-        - **Cabin** (faltan 327 valores, 78.23%):
-          - Dado que el porcentaje de valores faltantes es extremadamente alto, se recomienda **eliminar la columna**. Aunque los valores de Cabin podrían contener información útil, el esfuerzo necesario para imputar o agrupar los datos supera los beneficios para la mayoría de los análisis iniciales.
-        
-        ### 2. Codificación de variables categóricas: 
-        Usar **OneHot Encoding**, ya que hay pocas columnas categóricas con un número bajo de clases únicas. Esto evita que el modelo interprete relaciones ordinales inexistentes entre las categorías.
-        
-        ### 3. Estandarización de datos: 
-        Usar **StandardScaler**, que ajusta los datos para tener **media 0** y **desviación estándar 1**. Esto es particularmente útil para modelos como **regresión logística**, **SVM**, o **redes neuronales**, donde la escala uniforme mejora la convergencia y el desempeño del modelo.
-        """)
 
 
 
@@ -346,6 +326,25 @@ if st.sidebar.checkbox("Escalado de datos"):
         st.write(f"Vista previa de los datos escalados usando '{strategy}':")
         st.dataframe(scaled_data.head())
 
-
+st.markdown("""
+        ## **Retroalimentación: ¿qué era mejor escoger?**
+        
+        ### 1. Manejo de valores faltantes:
+        
+        - **Age** (faltan 86 valores, 20.57%):
+          - Se recomienda **imputación por KNN**, ya que considera relaciones entre columnas como Pclass, Sex, y SibSp para estimar las edades de manera más precisa. Esta estrategia es útil porque la edad es una característica importante para predecir la supervivencia.
+          
+        - **Fare** (falta 1 valor, 0.24%):
+          - Usar imputación por **media o mediana**, ya que el número de valores faltantes es insignificante. También una buena alternativa es **eliminar la fila** con el valor faltante.
+        
+        - **Cabin** (faltan 327 valores, 78.23%):
+          - Dado que el porcentaje de valores faltantes es extremadamente alto, se recomienda **eliminar la columna**. Aunque los valores de Cabin podrían contener información útil, el esfuerzo necesario para imputar o agrupar los datos supera los beneficios para la mayoría de los análisis iniciales.
+        
+        ### 2. Codificación de variables categóricas: 
+        Usar **OneHot Encoding**, ya que hay pocas columnas categóricas con un número bajo de clases únicas. Esto evita que el modelo interprete relaciones ordinales inexistentes entre las categorías.
+        
+        ### 3. Estandarización de datos: 
+        Usar **StandardScaler**, que ajusta los datos para tener **media 0** y **desviación estándar 1**. Esto es particularmente útil para modelos como **regresión logística**, **SVM**, o **redes neuronales**, donde la escala uniforme mejora la convergencia y el desempeño del modelo.
+        """)
 
 
