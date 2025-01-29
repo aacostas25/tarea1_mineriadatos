@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.impute import KNNImputer
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.preprocessing import OrdinalEncoder, OneHotEncoder
-##cargar los datos del titanic
-import kagglehub
+
 
 titanic = pd.read_csv('titanic.csv')
 
@@ -21,7 +20,14 @@ Esta aplicación interactiva permite explorar el dataset de Titanic.
 Puedes:
 1. Ver los primeros registros.
 2. Consultar información general del dataset.
-3. Generar gráficos dinámicos.
+3. Mirar las estadisticas descriptivas.
+4. Identificar los datos faltantes.
+5. Analizar la frecuencia de las columnas.
+6. Observar la información de cada pasajero.
+7. Explorar la matriz de correlación.
+8. Generar graficos dinamicos.
+
+Y además, transformar los datos mediante la imputación de datos faltantes, la codificación de variables categoricas y la estandarización de los datos.
 """)
 
 # Sección para explorar el dataset
